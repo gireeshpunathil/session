@@ -303,13 +303,13 @@ function session(options) {
 
       if (shouldDestroy(req)) {
         // destroy session
-        debug('destroying session store');
+        debug('destroying session');
         store.destroy(req.sessionID, function ondestroy(err) {
           if (err) {
             defer(next, err);
           }
 
-          debug('session store destroyed');
+          debug('session destroyed');
           writeend();
         });
 
@@ -334,7 +334,6 @@ function session(options) {
             defer(next, err);
           }
 
-          debug('session saved');
           writeend();
         });
 
@@ -396,6 +395,7 @@ function session(options) {
         debug('saving %s', this.id);
         savedHash = hash(this);
         _save.apply(this, arguments);
+        debug('session saved');
       }
 
       Object.defineProperty(sess, 'reload', {
