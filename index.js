@@ -303,13 +303,13 @@ function session(options) {
 
       if (shouldDestroy(req)) {
         // destroy session
-        debug('destroying session');
+        debug('destroying session')
         store.destroy(req.sessionID, function ondestroy(err) {
           if (err) {
             defer(next, err);
           }
 
-          debug('session destroyed');
+          debug('session destroyed')
           writeend();
         });
 
@@ -340,13 +340,13 @@ function session(options) {
         return writetop();
       } else if (storeImplementsTouch && shouldTouch(req)) {
         // store implements touch method
-        debug('touching');
+        debug('touching the session')
         store.touch(req.sessionID, req.session, function ontouch(err) {
           if (err) {
             defer(next, err);
           }
 
-          debug('touched');
+          debug('session touched')
           writeend();
         });
 
@@ -358,7 +358,7 @@ function session(options) {
 
     // generate the session
     function generate() {
-      debug('session generate');
+      debug('generating session')
       store.generate(req);
       originalId = req.sessionID;
       originalHash = hash(req.session);
@@ -391,13 +391,16 @@ function session(options) {
         })
       }
 
-      function save(cb) {
+      function save(callback) {
         debug('saving %s', this.id);
         savedHash = hash(this);
-        _save.call(this, function(err) {
-          if(!err)
-            debug('session saved');
-          cb(err);
+        _save.call(this, function (err) {
+          if (err) {
+           return callback(err)
+          }
+
+          debug('session saved')
+          callback.apply(this, arguments)
         });
       }
 
