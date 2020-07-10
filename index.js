@@ -340,7 +340,7 @@ function session(options) {
         return writetop();
       } else if (storeImplementsTouch && shouldTouch(req)) {
         // store implements touch method
-        debug('touching the session')
+        debug('touching session')
         store.touch(req.sessionID, req.session, function ontouch(err) {
           if (err) {
             defer(next, err);
